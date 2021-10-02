@@ -4,6 +4,7 @@ code_path=${HOME}"/"
 #uuid =>uuid
 uuid=${1}
 # create dir
+rm -r ${code_path}${uuid}"/static"
 mkdir ${code_path}${uuid}"/static"
 # setting path
 dir_path=${code_path}${uuid}"/code"

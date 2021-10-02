@@ -15,22 +15,21 @@ arch=`cat ${FirmAE_path}/scratch/${machine_id}/architecture`
 ip=`cat ${FirmAE_path}/scratch/${machine_id}/ip`
 
 cd ${file_path}
+make clean
+rm ${uuid}
 #complier
 case "$arch" in
     "armel") 
     echo "armel"
-    rm ${uuid}
-    make CC=${arm_compiler_path} EXEC=${uuid}
+    make CC=${arm_compiler_path} EXEC=${uuid} CFLAGS="-O2 -g -Wall -I include -std=gnu99"
     ;;
     "mipseb")    
     echo "mipseb"
-    rm ${uuid}
-    make CC=${mipseb_compiler_path} EXEC=${uuid}
+    make CC=${mipseb_compiler_path} EXEC=${uuid} CFLAGS="-O2 -g -Wall -I include -std=gnu99"
     ;;
     "mipsel")    
     echo "mipsel"
-    rm ${uuid}
-    make CC=${mipsel_compiler_path} EXEC=${uuid}
+    make CC=${mipsel_compiler_path} EXEC=${uuid} CFLAGS="-O2 -g -Wall -I include -std=gnu99"
     ;;
     *)
     echo "error"
@@ -41,11 +40,14 @@ esac
 cd ${FirmAE_path}
 ${FirmAE_path}/scripts/mount.sh ${machine_id}
 #cp binary to filesystem
-cp ${file_path}/${uuid} ${FirmAE_path}/scratch/${machine_id}/image/etc/${uuid}
+rm -r ${FirmAE_path}/scratch/${machine_id}/image/etc/init.d/test
+mkdir ${FirmAE_path}/scratch/${machine_id}/image/etc/init.d/test
+cp ${file_path}/${uuid} ${FirmAE_path}/scratch/${machine_id}/image/etc/init.d/test/${uuid}
 #chmod
 chmod a+x ${FirmAE_path}/scratch/${machine_id}/image/etc/${uuid}
 #add sh in init.d
-echo "/etc/${uuid} 80 &" >> ${FirmAE_path}/scratch/${machine_id}/image/etc/init.d/S00${uuid}.sh
+rm ${FirmAE_path}/scratch/${machine_id}/image/etc/init.d/S00${uuid}.sh
+echo "/etc/init.d/test/${uuid} 80 &" >> ${FirmAE_path}/scratch/${machine_id}/image/etc/init.d/S00${uuid}.sh
 #chmod
 chmod a+x ${FirmAE_path}/scratch/${machine_id}/image/etc/init.d/S00${uuid}.sh
 #umount filesystem
