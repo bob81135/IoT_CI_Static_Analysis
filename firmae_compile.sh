@@ -13,7 +13,7 @@ mipsel_compiler_path=${HOME}"/IoT_CI_Static_Analysis/mipsel-2.6.36/usr/bin/mipse
 #get arch and ip
 arch=`cat ${FirmAE_path}/scratch/${machine_id}/architecture`
 ip=`cat ${FirmAE_path}/scratch/${machine_id}/ip`
-
+echo test
 cd ${file_path}
 make clean
 rm ${uuid}
@@ -35,7 +35,7 @@ case "$arch" in
     echo "error"
     ;;
 esac
-
+echo $?
 #mount filesystem
 cd ${FirmAE_path}
 ${FirmAE_path}/scripts/mount.sh ${machine_id}
@@ -54,7 +54,7 @@ chmod a+x ${FirmAE_path}/scratch/${machine_id}/image/etc/init.d/S00${uuid}.sh
 ${FirmAE_path}/scripts/umount.sh ${machine_id}
 
 #run emulation
-${FirmAE_path}/scratch/${machine_id}/run.sh &>/dev/null 2>&1
+${FirmAE_path}/scratch/${machine_id}/run.sh & 2>/dev/null
 sleep 5m
 echo "finish"
 
