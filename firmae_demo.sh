@@ -9,7 +9,7 @@ code_root_folder=${3}
 log_root_folder=${4}
 #setting path
 FirmAE_path=${HOME}"/FirmAE"
-file_path=${code_root_folder}${uuid}
+file_path=${code_root_folder}/${uuid}
 arm_compiler_path=${HOME}"/IoT_CI_Static_Analysis/armel_2.6.36.4/host/usr/bin/arm-linux-gcc"
 mipseb_compiler_path=${HOME}"/IoT_CI_Static_Analysis/mipseb-2.6.36/usr/bin/mips-buildroot-linux-uclibc-gcc"
 mipsel_compiler_path=${HOME}"/IoT_CI_Static_Analysis/mipsel-2.6.36/usr/bin/mipsel-buildroot-linux-uclibc-gcc"
@@ -19,7 +19,7 @@ cd ${log_root_folder}
 mkdir -p ${uuid}/static
 
 # setting path
-log_path=${log_root_folder}${uuid}"/static"
+log_path=${log_root_folder}/${uuid}"/static"
 cd ${file_path}
 #find all .c file
 tag=$(find . -type f -name "*.c")
@@ -104,4 +104,6 @@ fi
 # call dynamic analysis
 echo ${uuid}
 echo ${ip}
+ps -ef | grep ${FirmAE_path}/scratch/${machine_id} | grep -v grep | awk '{print $2}' | xargs kill
+ip link del tap${machine_id}_0
 echo "success"  >&5
